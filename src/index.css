@@ -2,7 +2,7 @@
  * @Author: chen yang 
  * @Date: 2020-09-11 11:31:54 
  * @Last Modified by: chen yang
- * @Last Modified time: 2020-09-11 12:03:12
+ * @Last Modified time: 2020-09-11 12:34:55
  */
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
@@ -132,4 +132,16 @@ footer {
 }
 .button.primary {
   background-color: #f0c040;
+}
+
+/** Filter */
+.filter {
+  display: flex;
+  padding: 1rem;
+  margin: 1rem;
+  border-bottom: 0.1rem #c0c0c0 solid;
+  justify-content: space-between;
+}
+.filter div {
+  flex: 1;
 }
