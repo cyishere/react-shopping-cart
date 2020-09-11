@@ -2,17 +2,42 @@
  * @Author: chen yang
  * @Date: 2020-09-11 11:31:49
  * @Last Modified by: chen yang
- * @Last Modified time: 2020-09-11 13:00:39
+ * @Last Modified time: 2020-09-11 14:59:27
  */
 import React, { useState } from "react";
 import data from "./data.json";
 import Products from "./components/Products";
 import Filter from "./components/Filter";
+import Cart from "./components/Cart";
 
 const App = () => {
   const [products, setProducts] = useState(data.products);
   const [size, setSize] = useState("");
   const [sort, setSort] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (product) => {
+    const itemsInCart = [...cartItems];
+    let alreadyInCart = false;
+
+    itemsInCart.forEach((item) => {
+      if (item._id === product._id) {
+        item.count++;
+        alreadyInCart = true;
+      }
+    });
+
+    if (!alreadyInCart) {
+      itemsInCart.push({ ...product, count: 1 });
+    }
+
+    setCartItems(itemsInCart);
+  };
+
+  const removeFromCart = (product) => {
+    const itemsInCart = [...cartItems];
+    setCartItems(itemsInCart.filter((item) => item._id !== product._id));
+  };
 
   const filterProducts = (event) => {
     const theValue = event.target.value;
@@ -68,10 +93,12 @@ const App = () => {
               filterProducts={filterProducts}
               sortProducts={sortProducts}
             />
-            <Products products={products} />
+            <Products products={products} addToCart={addToCart} />
           </div>
 
-          <div className="sidebar">Cart Items</div>
+          <div className="sidebar">
+            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+          </div>
         </div>
       </main>
 
