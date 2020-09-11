@@ -2,7 +2,7 @@
  * @Author: chen yang
  * @Date: 2020-09-11 11:31:49
  * @Last Modified by: chen yang
- * @Last Modified time: 2020-09-11 14:59:27
+ * @Last Modified time: 2020-09-11 17:29:12
  */
 import React, { useState } from "react";
 import data from "./data.json";
@@ -11,10 +11,18 @@ import Filter from "./components/Filter";
 import Cart from "./components/Cart";
 
 const App = () => {
+  let localProducts = localStorage.getItem("cartItems")
+    ? JSON.parse(localStorage.getItem("cartItems"))
+    : [];
+
   const [products, setProducts] = useState(data.products);
   const [size, setSize] = useState("");
   const [sort, setSort] = useState("");
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(localProducts);
+
+  const createOrder = (order) => {
+    alert("Need to save order for " + order.name);
+  };
 
   const addToCart = (product) => {
     const itemsInCart = [...cartItems];
@@ -32,11 +40,20 @@ const App = () => {
     }
 
     setCartItems(itemsInCart);
+
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   };
 
   const removeFromCart = (product) => {
     const itemsInCart = [...cartItems];
-    setCartItems(itemsInCart.filter((item) => item._id !== product._id));
+
+    const cartItemsRemain = itemsInCart.filter(
+      (item) => item._id !== product._id
+    );
+
+    setCartItems(cartItemsRemain);
+
+    localStorage.setItem("cartItems", JSON.stringify(cartItemsRemain));
   };
 
   const filterProducts = (event) => {
@@ -97,7 +114,11 @@ const App = () => {
           </div>
 
           <div className="sidebar">
-            <Cart cartItems={cartItems} removeFromCart={removeFromCart} />
+            <Cart
+              cartItems={cartItems}
+              removeFromCart={removeFromCart}
+              createOrder={createOrder}
+            />
           </div>
         </div>
       </main>
