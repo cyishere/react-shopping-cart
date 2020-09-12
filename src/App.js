@@ -2,10 +2,11 @@
  * @Author: chen yang
  * @Date: 2020-09-11 11:31:49
  * @Last Modified by: chen yang
- * @Last Modified time: 2020-09-11 17:29:12
+ * @Last Modified time: 2020-09-12 15:46:46
  */
-import React, { useState } from "react";
-import data from "./data.json";
+import React, { useState, useEffect } from "react";
+// import data from "./data.json";
+import productService from "./services/products";
 import Products from "./components/Products";
 import Filter from "./components/Filter";
 import Cart from "./components/Cart";
@@ -15,10 +16,18 @@ const App = () => {
     ? JSON.parse(localStorage.getItem("cartItems"))
     : [];
 
-  const [products, setProducts] = useState(data.products);
+  const [initProducts, setInitProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [size, setSize] = useState("");
   const [sort, setSort] = useState("");
   const [cartItems, setCartItems] = useState(localProducts);
+
+  useEffect(() => {
+    productService.getAll().then((allProducts) => {
+      setInitProducts(allProducts);
+      setProducts(allProducts);
+    });
+  }, []);
 
   const createOrder = (order) => {
     alert("Need to save order for " + order.name);
@@ -60,12 +69,16 @@ const App = () => {
     const theValue = event.target.value;
     setSize(theValue);
     if (theValue === "") {
-      setProducts(data.products);
+      setProducts(initProducts);
+      // setProducts(data.products);
     } else {
       setProducts(
-        data.products.filter(
+        initProducts.filter(
           (product) => product.availableSizes.indexOf(theValue) >= 0
         )
+        // data.products.filter(
+        //   (product) => product.availableSizes.indexOf(theValue) >= 0
+        // )
       );
     }
   };
@@ -110,7 +123,11 @@ const App = () => {
               filterProducts={filterProducts}
               sortProducts={sortProducts}
             />
-            <Products products={products} addToCart={addToCart} />
+            {products.length === 0 ? (
+              <div className="center">Loading...</div>
+            ) : (
+              <Products products={products} addToCart={addToCart} />
+            )}
           </div>
 
           <div className="sidebar">
