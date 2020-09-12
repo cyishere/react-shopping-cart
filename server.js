@@ -1,9 +1,17 @@
+/*
+ * @Author: chen yang
+ * @Date: 2020-09-12 09:37:10
+ * @Last Modified by: chen yang
+ * @Last Modified time: 2020-09-12 14:46:14
+ */
 const express = require("express");
 const mongoose = require("mongoose");
 const shortid = require("shortid");
 
 const app = express();
 
+const cors = require("cors");
+app.use(cors());
 app.use(express.json());
 // app.use(express.urlencoded());
 

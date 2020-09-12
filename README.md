@@ -1,3 +1,5 @@
 # React Shopping Cart
 
-## Step 1: Create React App
+## Update @ 0912
+
+The branch "add-redux-products" has some problems, cannot pass the products to UI. Still working on it.

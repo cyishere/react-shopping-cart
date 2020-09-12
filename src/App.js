@@ -2,13 +2,15 @@
  * @Author: chen yang
  * @Date: 2020-09-11 11:31:49
  * @Last Modified by: chen yang
- * @Last Modified time: 2020-09-11 17:29:12
+ * @Last Modified time: 2020-09-12 12:12:33
  */
 import React, { useState } from "react";
 import data from "./data.json";
 import Products from "./components/Products";
 import Filter from "./components/Filter";
 import Cart from "./components/Cart";
+import store from "./store";
+import { Provider } from "react-redux";
 
 const App = () => {
   let localProducts = localStorage.getItem("cartItems")
@@ -95,36 +97,38 @@ const App = () => {
   };
 
   return (
-    <div className="grid-container">
-      <header>
-        <a href="/">React Shopping Cart</a>
-      </header>
+    <Provider store={store}>
+      <div className="grid-container">
+        <header>
+          <a href="/">React Shopping Cart</a>
+        </header>
 
-      <main>
-        <div className="content">
-          <div className="main">
-            <Filter
-              count={products.length}
-              size={size}
-              sort={sort}
-              filterProducts={filterProducts}
-              sortProducts={sortProducts}
-            />
-            <Products products={products} addToCart={addToCart} />
+        <main>
+          <div className="content">
+            <div className="main">
+              <Filter
+                count={products.length}
+                size={size}
+                sort={sort}
+                filterProducts={filterProducts}
+                sortProducts={sortProducts}
+              />
+              <Products products={products} addToCart={addToCart} />
+            </div>
+
+            <div className="sidebar">
+              <Cart
+                cartItems={cartItems}
+                removeFromCart={removeFromCart}
+                createOrder={createOrder}
+              />
+            </div>
           </div>
+        </main>
 
-          <div className="sidebar">
-            <Cart
-              cartItems={cartItems}
-              removeFromCart={removeFromCart}
-              createOrder={createOrder}
-            />
-          </div>
-        </div>
-      </main>
-
-      <footer>All right is reserved.</footer>
-    </div>
+        <footer>All right is reserved.</footer>
+      </div>
+    </Provider>
   );
 };
 
