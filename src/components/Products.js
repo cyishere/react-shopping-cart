@@ -2,7 +2,7 @@
  * @Author: chen yang
  * @Date: 2020-09-11 11:20:51
  * @Last Modified by: chen yang
- * @Last Modified time: 2020-09-11 21:45:32
+ * @Last Modified time: 2020-09-12 15:11:38
  */
 import React, { useState } from "react";
 import formatCurrency from "../util";
@@ -24,28 +24,35 @@ const Products = ({ products, addToCart }) => {
   return (
     <div>
       <Fade bottom cascade>
-        <ul className="products">
-          {products.map((product) => (
-            <li key={product._id}>
-              <div className="product">
-                <a href={`#${product._id}`} onClick={() => openModal(product)}>
-                  <img src={product.image} alt={product.title} />
-                  <p>{product.title}</p>
-                </a>
-
-                <div className="product-price">
-                  <div>{formatCurrency(product.price)}</div>
-                  <button
-                    className="button primary"
-                    onClick={() => addToCart(product)}
+        {!products ? (
+          <div>Loading...</div>
+        ) : (
+          <ul className="products">
+            {products.map((product) => (
+              <li key={product._id}>
+                <div className="product">
+                  <a
+                    href={`#${product._id}`}
+                    onClick={() => openModal(product)}
                   >
-                    Add To Cart
-                  </button>
+                    <img src={product.image} alt={product.title} />
+                    <p>{product.title}</p>
+                  </a>
+
+                  <div className="product-price">
+                    <div>{formatCurrency(product.price)}</div>
+                    <button
+                      className="button primary"
+                      onClick={() => addToCart(product)}
+                    >
+                      Add To Cart
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        )}
       </Fade>
 
       {productInModal && (
